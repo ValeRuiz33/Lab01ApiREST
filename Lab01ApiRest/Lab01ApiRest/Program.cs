@@ -37,16 +37,26 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions{
 app.UseCors("CorsPolicy");
 
 app.UseAuthorization();
-app.Run(async context =>
+
+app.Use(async (context, next) =>
 {
-    await context.Response.WriteAsync("Hello from the widdleware component.");
+    Console.WriteLine($"Logic before executing the next delegate in the use method ");
+    await next.Invoke(); Console.WriteLine($"Logic after executing the next delegate in the use method");
 });
 
+
+
 app.MapControllers();
+
+app.Run(async context =>
+{
+    Console.WriteLine($"Writing the response to the client in the run method");
+    await context.Response.WriteAsync("Hello from the widdleware component.");
+});
 
 app.Run();
 
 namespace Microsoft.AspNetCore.Http
 {
     public delegate Task RequestDelegate(HttpContext context);
-}
+}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
