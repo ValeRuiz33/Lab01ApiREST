@@ -1,5 +1,6 @@
 using Lab01ApiRest.Extensions;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.ConfigureCors();
@@ -41,12 +42,22 @@ app.UseAuthorization();
 app.Use(async (context, next) =>
 {
     Console.WriteLine($"Logic before executing the next delegate in the use method ");
-    await next.Invoke(); Console.WriteLine($"Logic after executing the next delegate in the use method");
+    await next.Invoke(); 
+    Console.WriteLine($"Logic after executing the next delegate in the use method");
 });
 
 
+app.Map("/usingmapbranch", builder => {builder.Use(async (context, next) =>
+{
+    Console.WriteLine("Map branch logic in the Use method before the next delegate");
+    await next.Invoke(); Console.WriteLine("Map branch logic in the Use method after the next delegate");
+});
+    builder.Run(async context => { Console.WriteLine($"Map branch response to the client in the Run method");
+        await context.Response.WriteAsync("Hello from the map branch.");
 
-app.MapControllers();
+    });
+});
+
 
 app.Run(async context =>
 {
@@ -54,6 +65,7 @@ app.Run(async context =>
     await context.Response.WriteAsync("Hello from the widdleware component.");
 });
 
+app.MapControllers();
 app.Run();
 
 namespace Microsoft.AspNetCore.Http
