@@ -1,4 +1,4 @@
-namespace Lab01ApiRest
+namespace APIRestLab01
 {
     public class WeatherForecast
     {
