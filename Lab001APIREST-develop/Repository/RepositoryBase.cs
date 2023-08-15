@@ -15,7 +15,7 @@ namespace Repository
 
         public RepositoryBase(RepositoryContext repositoryContext)
         => this.RepositoryContext = repositoryContext;
-        
+
         public void Create(T entity)
         => RepositoryContext.Set<T>().Add(entity);
 

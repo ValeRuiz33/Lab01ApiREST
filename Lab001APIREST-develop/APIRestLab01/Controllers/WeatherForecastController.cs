@@ -24,7 +24,7 @@ namespace APIRestLab01.Controllers
         private ILoggerManager _logger;
         public WeatherForecastController(ILoggerManager logger)
         {
-                this._logger = logger;
+            this._logger = logger;
         }
 
         [HttpGet(Name = "GetWeatherForecast")]
